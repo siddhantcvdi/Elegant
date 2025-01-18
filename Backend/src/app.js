@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { userRouter } from './routes/user.routes.js';
+import productRouter from './routes/product.routes.js';
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -18,6 +19,7 @@ app.use(express.static('public'))
 app.use(cookieParser())
 
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/products', productRouter)
 
 export {app}
 
