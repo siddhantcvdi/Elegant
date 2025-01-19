@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 interface InputProps {
   id: string;
@@ -9,20 +9,17 @@ interface InputProps {
 }
 
 const Input = (props: InputProps) => {
-  console.log(props);
   if (props.type === "area") {
     return (
-      <>
-        <div className="flex flex-col text-xs gap-1">
-          <label htmlFor={props.id}>{props.title}</label>
-          <textarea
-            id={props.id}
-            className="text-sm w-full sm:w-[70%] p-2 border-[1px] border-gray-200 rounded-md h-32 resize-none"
-            value={props.value}
-            onChange={(e) => props.setValue(e.target.value)}
-          />
-        </div>
-      </>
+      <div className="flex flex-col text-xs gap-1">
+        <label htmlFor={props.id}>{props.title}</label>
+        <textarea
+          id={props.id}
+          className="text-sm w-full sm:w-[70%] p-2 border-[1px] border-gray-200 rounded-md h-32 resize-none"
+          value={props.value}
+          onChange={(e) => props.setValue(e.target.value)}
+        />
+      </div>
     );
   } else
     return (
@@ -39,4 +36,4 @@ const Input = (props: InputProps) => {
     );
 };
 
-export default Input;
+export default memo(Input);

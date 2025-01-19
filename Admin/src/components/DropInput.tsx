@@ -28,9 +28,7 @@ const DropInput = (props: DropInputProps) => {
           <SelectGroup>
             <SelectLabel>{props.title}</SelectLabel>
             {props.items.map((item, index) => (
-              <SelectItem
-                key={item}
-                value={props.values[index]}>
+              <SelectItem key={item} value={props.values[index]}>
                 {item}
               </SelectItem>
             ))}

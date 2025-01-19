@@ -2,15 +2,7 @@ import DropInput from "@/components/DropInput";
 import ImageInput from "@/components/ImageInput";
 import Input from "@/components/Input";
 
-import {
-  Delete,
-  LucideDelete,
-  PlusCircle,
-  PlusSquareIcon,
-  Trash,
-} from "lucide-react";
-
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 const AddProduct = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
