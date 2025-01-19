@@ -1,4 +1,4 @@
-import { BoxesIcon, BoxIcon, BoxSelectIcon, BrickWall, Calendar, CircleUser, Home, HomeIcon, Inbox, LayoutDashboardIcon, LineChartIcon, LucideBox, Package, Package2, PersonStanding, ReceiptText, Search, Settings, ShoppingBasket, ShoppingCartIcon, Star } from "lucide-react"
+import { BoxesIcon, BoxIcon, BoxSelectIcon, BrickWall, Calendar, ChartNoAxesGantt, CircleUser, Home, HomeIcon, Inbox, LayoutDashboardIcon, LineChartIcon, LucideBox, Package, Package2, PersonStanding, ReceiptText, Search, Settings, ShoppingBasket, ShoppingCartIcon, Star } from "lucide-react"
 
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { title } from "process"
 
 // Menu items.
 const items = [
@@ -22,6 +23,11 @@ const items = [
     title: "Products",
     url: "#",
     icon: Package,
+  },
+  {
+    title: "Categories",
+    url: "#",
+    icon: ChartNoAxesGantt,
   },
   {
     title: "Orders",
