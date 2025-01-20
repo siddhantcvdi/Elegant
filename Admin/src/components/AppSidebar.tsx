@@ -1,4 +1,4 @@
-import { BoxesIcon, BoxIcon, BoxSelectIcon, BrickWall, Calendar, ChartNoAxesGantt, CircleUser, Home, HomeIcon, Inbox, LayoutDashboardIcon, LineChartIcon, LucideBox, Package, Package2, PersonStanding, ReceiptText, Search, Settings, ShoppingBasket, ShoppingCartIcon, Star } from "lucide-react"
+import { ChartNoAxesGantt, CircleUser, LayoutDashboardIcon, Package, PlusSquare, ShoppingCartIcon, Star } from "lucide-react"
 
 import {
   Sidebar,
@@ -10,9 +10,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { title } from "process"
+import { NavLink } from "react-router-dom"
 
-// Menu items.
 const items = [
   {
     title: "Dashboard",
@@ -21,27 +20,32 @@ const items = [
   },
   {
     title: "Products",
-    url: "#",
+    url: "/products",
     icon: Package,
   },
   {
+    title: "Add Product",
+    url: '/addproduct',
+    icon: PlusSquare
+  },
+  {
     title: "Categories",
-    url: "#",
+    url: "/categories",
     icon: ChartNoAxesGantt,
   },
   {
     title: "Orders",
-    url: "#",
+    url: "/orders",
     icon: ShoppingCartIcon,
   },
   {
     title: "Customers",
-    url: "#",
+    url: "/customers",
     icon: CircleUser,
   },
   {
     title: "Reviews",
-    url: "#",
+    url: "/reviews",
     icon: Star,
   },
 ]
@@ -57,10 +61,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="ml-3">
-                    <a href={item.url}>
+                    <NavLink to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

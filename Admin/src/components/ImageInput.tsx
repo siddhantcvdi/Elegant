@@ -28,7 +28,7 @@ const ImageInput = (props: ImageInputProps) => {
           <PlusCircle className="w-4" color="#555" />
         </label>
         <button
-          className="rounded-lg bg-red-500 w-9 flex justify-center items-center ml-2"
+          className="rounded-lg bg-red-500 active:bg-red-600 w-9 flex justify-center items-center ml-2"
           onClick={() => setSelectedFiles([])}
         >
           <Trash className="w-4" color="#fff" />

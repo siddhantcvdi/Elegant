@@ -4,8 +4,8 @@ interface InputProps {
   id: string;
   type: string;
   title: string;
-  setValue: React.Dispatch<React.SetStateAction<any>>;
-  value: any;
+  setState: React.Dispatch<React.SetStateAction<any>>;
+  state: any;
 }
 
 const Input = (props: InputProps) => {
@@ -16,8 +16,8 @@ const Input = (props: InputProps) => {
         <textarea
           id={props.id}
           className="text-sm w-full sm:w-[70%] p-2 border-[1px] border-gray-200 rounded-md h-32 resize-none"
-          value={props.value}
-          onChange={(e) => props.setValue(e.target.value)}
+          value={props.state}
+          onChange={(e) => props.setState(e.target.value)}
         />
       </div>
     );
@@ -29,8 +29,8 @@ const Input = (props: InputProps) => {
           type={props.type}
           id={props.id}
           className="text-sm w-full sm:w-[70%] p-2 border-[1px] border-gray-200 rounded-md"
-          value={props.value}
-          onChange={(e) => props.setValue(e.target.value)}
+          value={props.state}
+          onChange={(e) => props.setState(e.target.value)}
         />
       </div>
     );

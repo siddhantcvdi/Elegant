@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2"
 
 const productSchema = new mongoose.Schema(
   {
@@ -20,9 +21,13 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    brand: {
+      type: String,
+      required: true,
+    },
     rating: {
       type: Number,
-      required: true,
+      default: 0,
     },
     stock: {
       type: Number,
@@ -36,17 +41,16 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    categories: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-        required: true,
-      },
-    ],
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: false,
+      default: null,
+    },
   },
   { timestamps: true }
 );
-
+productSchema.plugin(aggregatePaginate);
 const Product = mongoose.model("Product", productSchema);
 
 export default Product;
