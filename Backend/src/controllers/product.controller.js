@@ -15,12 +15,12 @@ const createProduct = asyncHandler(async (req, res) => {
     stock,
     description,
     status,
-    categories,
+    category,
     brand,
   } = req.body;
 
   if (
-    [name, price, discount, stock, description, status, brand].some(
+    [name, price, discount, stock, description, status, brand, category].some(
       (field) => field?.trim() === "" || !field
     )
   ) {
@@ -55,7 +55,7 @@ const createProduct = asyncHandler(async (req, res) => {
     brand,
     description,
     status,
-    categories,
+    category,
     images: uploadedImages.map((image) => image.secure_url),
   });
   console.log("Product Added");

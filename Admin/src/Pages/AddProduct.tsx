@@ -2,7 +2,7 @@ import DropInput from "@/components/DropInput";
 import ImageInput from "@/components/ImageInput";
 import Input from "@/components/Input";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Loader, Loader2 } from "lucide-react";
 
@@ -18,6 +18,12 @@ interface Product {
   images: File[];
 }
 
+type CategoryType = {
+  _id: string;
+  name: string;
+};
+
+
 const AddProduct = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
@@ -29,6 +35,8 @@ const AddProduct = () => {
   const [productDesc, setProductDesc] = useState("");
   const [productBrand, setProductBrand] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
   const { toast } = useToast();
 
   const handleAddProduct = async () => {
@@ -118,6 +126,21 @@ const AddProduct = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/v1/categories/all")
+    .then(res => {
+      if(res?.data.data && Array.isArray(res.data.data)) {
+        setCategories(res.data.data);
+      }
+    })
+    .catch(() => {
+      toast({
+        variant: "destructive",
+        title: "Error loading categories.",
+      });
+    })
+  },[categories])
   return (
     <>
       <div className="w-full flex-1">
@@ -154,9 +177,9 @@ const AddProduct = () => {
             className="w-full sm:w-[70%]"
           />
           <DropInput
-            items={["Cat1", "Cat2", "Cat3"]}
+            items={categories.map((category) => category.name)}
             title="Category"
-            values={["12qw", "45rt", "89io"]}
+            values={categories.map((category) => category._id)}
             setState={setProductCategory}
             className="w-full sm:w-[70%]"
           />
