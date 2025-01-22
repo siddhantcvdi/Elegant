@@ -5,6 +5,7 @@ import { SidebarProvider } from './components/ui/sidebar'
 import { AppSidebar } from './components/AppSidebar'
 import TopBar from './components/TopBar'
 import { Toaster } from "@/components/ui/toaster"
+import Categories from "./Pages/Categories";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <TopBar/>
       <Routes>
         <Route path='/addproduct' element={<AddProduct/>}/>
+        <Route path='/categories' element={<Categories/>}/>
       </Routes>
       </div>
     </SidebarProvider>

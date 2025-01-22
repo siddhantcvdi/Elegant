@@ -128,12 +128,14 @@ const AddProduct = () => {
             title="Product Name"
             setState={setProductName}
             state={productName}
+            className="w-full sm:w-[70%]"
           />
           <DropInput
             items={["Available", "Out of Stock", "Coming Soon"]}
             title="Set Status"
             values={["av", "oos", "cs"]}
             setState={setProductStatus}
+            className="w-full sm:w-[70%]"
           />
           <Input
             id="prod_price"
@@ -141,6 +143,7 @@ const AddProduct = () => {
             title="Price"
             setState={setProductPrice}
             state={productPrice}
+            className="w-full sm:w-[70%]"
           />
           <Input
             id="prod_brand"
@@ -148,12 +151,14 @@ const AddProduct = () => {
             title="Brand"
             setState={setProductBrand}
             state={productBrand}
+            className="w-full sm:w-[70%]"
           />
           <DropInput
             items={["Cat1", "Cat2", "Cat3"]}
             title="Category"
             values={["12qw", "45rt", "89io"]}
             setState={setProductCategory}
+            className="w-full sm:w-[70%]"
           />
           <Input
             id="prod_units"
@@ -161,6 +166,7 @@ const AddProduct = () => {
             title="Units"
             setState={setUnits}
             state={units}
+            className="w-full sm:w-[70%]"
           />
           <ImageInput
             selectedFiles={selectedFiles}
@@ -173,6 +179,7 @@ const AddProduct = () => {
               title="Discount"
               setState={setDiscount}
               state={discount}
+              className="w-full sm:w-[70%]"
             />
             <Input
               id="prod_desc"
@@ -180,6 +187,7 @@ const AddProduct = () => {
               title="Description"
               setState={setProductDesc}
               state={productDesc}
+              className="w-full sm:w-[70%]"
             />
             <button
               className={`max-md:w-full w-[70%] bg-neutral-800 text-white rounded-xl font-light p-3 ${isLoading ? "cursor-not-allowed bg-neutral-700 disabled" : "cursor-pointer"}`}

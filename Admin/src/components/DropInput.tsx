@@ -8,12 +8,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { twMerge } from "tailwind-merge";
 
 interface DropInputProps {
   items: string[];
   values: string[];
   title: string;
   setState: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
 }
 
 const DropInput = (props: DropInputProps) => {
@@ -21,7 +23,7 @@ const DropInput = (props: DropInputProps) => {
     <div className="flex flex-col text-xs gap-1 text-neutral-600 font-medium">
       <label>{props.title}</label>
       <Select onValueChange={(value) => props.setState(value)}>
-        <SelectTrigger className="w-[70%] max-sm:w-full font-normal">
+        <SelectTrigger className={twMerge("font-normal", props.className)}>
           <SelectValue placeholder="" />
         </SelectTrigger>
         <SelectContent>
