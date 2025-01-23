@@ -49,7 +49,7 @@ const AddProduct = () => {
       return;
     }
 
-    if (productPrice! <= 0 || units! <= 0) {
+    if (productPrice! <= 0) {
       toast({
         variant: "destructive",
         title: "Price and Units must be greater than 0.",
@@ -140,7 +140,7 @@ const AddProduct = () => {
         title: "Error loading categories.",
       });
     })
-  },[categories])
+  },[])
   return (
     <>
       <div className="w-full flex-1">
@@ -156,7 +156,7 @@ const AddProduct = () => {
           <DropInput
             items={["Available", "Out of Stock", "Coming Soon"]}
             title="Set Status"
-            values={["av", "oos", "cs"]}
+            values={["Available", "Out of Stock", "Coming Soon"]}
             setState={setProductStatus}
             className="w-full sm:w-[70%]"
           />

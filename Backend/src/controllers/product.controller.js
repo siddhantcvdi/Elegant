@@ -8,16 +8,8 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
 
 const createProduct = asyncHandler(async (req, res) => {
-  const {
-    name,
-    price,
-    discount,
-    stock,
-    description,
-    status,
-    category,
-    brand,
-  } = req.body;
+  const { name, price, discount, stock, description, status, category, brand } =
+    req.body;
 
   if (
     [name, price, discount, stock, description, status, brand, category].some(
@@ -65,8 +57,6 @@ const createProduct = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, product, "Product created successfully"));
 });
 
-
-
 const getProducts = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -86,24 +76,67 @@ const getProducts = asyncHandler(async (req, res) => {
     });
   }
 
-  const pipeline = [{ $match: filters.length > 0 ? { $and: filters } : {} }]
+  const pipeline = [
+    { $match: filters.length > 0 ? { $and: filters } : {} },
+    {
+      $lookup: {
+        from: "categories", 
+        localField: "category", 
+        foreignField: "_id", 
+        as: "categoryDetails", 
+      },
+    },
+    {
+      $unwind: {
+        path: "$categoryDetails",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $project: {
+        name: 1,
+        price: 1,
+        discount: 1,
+        brand: 1,
+        stock: 1,
+        status: 1,
+        rating: 1,
+        images: 1,
+        category: "$categoryDetails.name", 
+      },
+    },
+  ];
   const options = {
     page,
-    limit
-  }
+    limit,
+  };
 
-  if(sort){
-    pipeline.push({$sort: {price: sort === "asc" ? 1 : -1}})
+  if (sort) {
+    pipeline.push({ $sort: { price: sort === "asc" ? 1 : -1 } });
   }
 
   const aggregateQuery = Product.aggregate(pipeline);
   const result = await Product.aggregatePaginate(aggregateQuery, options);
 
-  if(!result){
+  if (!result) {
     throw new ApiError(404, "No products found");
   }
 
-  return res.status(200).json(new ApiResponse(200, result, "Products fetched successfully"));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, result, "Products fetched successfully"));
 });
 
-export { createProduct, getProducts };
+const deleteProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new ApiError(404, "Product not found");
+  }
+  await Product.findByIdAndDelete(id);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Product deleted successfully"));
+})
+
+export { createProduct, getProducts, deleteProduct };

@@ -16,7 +16,7 @@ const createCategory = asyncHandler(async (req, res) => {
 
     const newCategory = await Category.create({name});
 
-    res.status(201).json(new ApiResponse(201, "Category created successfully", newCategory));
+    res.status(201).json(new ApiResponse(201,  newCategory,"Category created successfully"));
     
 })
 
