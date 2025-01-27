@@ -1,3 +1,4 @@
+import Container from '@/components/Container';
 import DropInput from '@/components/DropInput';
 import ImageInput from '@/components/ImageInput';
 import Input from '@/components/Input';
@@ -39,9 +40,8 @@ const EditProduct = () => {
     const [categories, setCategories] = useState<CategoryType[]>([]);
     const { toast } = useToast();
     const {id} = useParams<{id: string}>();
-    console.log("ddd");
     
-    const handleAddProduct = async () => {
+    const handleEditProduct = async () => {
       if ([productName, productStatus, productDesc, productBrand].some((field) => field.trim() === "") ||
           [productPrice, discount, units].some((field) => field === undefined || field === null)) {
         toast({
@@ -67,14 +67,6 @@ const EditProduct = () => {
         return;
       }
   
-      if (selectedFiles.length === 0) {
-        toast({
-          variant: "destructive",
-          title: "Please upload atleast one image.",
-        });
-        return;
-      }
-  
       const product: Product = {
         name: productName,
         category: productCategory,
@@ -88,6 +80,7 @@ const EditProduct = () => {
       };
   
       const formData = new FormData();
+      formData.append("id", id!);
       formData.append("name", product.name);
       formData.append("category", product.category);
       formData.append("status", product.status);
@@ -104,7 +97,7 @@ const EditProduct = () => {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          "http://localhost:3001/api/v1/products/create",
+          "http://localhost:3001/api/v1/products/editProduct",
           formData,
           {
             headers: {
@@ -113,12 +106,12 @@ const EditProduct = () => {
           }
         );
         toast({
-          title: "Product added successfully.",
+          title: "Product Updated successfully.",
         });
         console.log("Response:", response.data);
   
       } catch (err: any) {
-        console.error("Error adding product:", err);
+        console.error("Error updating product:", err);
         toast({
           variant: "destructive",
           title: "Failed to add product. ",
@@ -128,8 +121,7 @@ const EditProduct = () => {
         setIsLoading(false);
       }
     };
-  
-    useEffect(() => {
+    const getCategories = () => {
       axios.get("http://localhost:3001/api/v1/categories/all")
       .then(res => {
         if(res?.data.data && Array.isArray(res.data.data)) {
@@ -142,11 +134,42 @@ const EditProduct = () => {
           title: "Error loading categories.",
         });
       })
+    }
+    const getProductById = (id:string) => {
+      axios.get(`http://localhost:3001/api/v1/products/getProductById/${id}`,{
+      })
+      .then(res => {
+        if(res?.data.data) {
+          const product = res.data.data;
+          console.log(product);
+          setProductName(product.name);
+          setProductCategory(product.category);
+          setProductStatus(product.status);
+          setProductPrice(product.price);
+          setDiscount(product.discount);
+          setUnits(product.stock);
+          setProductDesc(product.description);
+          setProductBrand(product.brand);
+
+        }
+      })
+      .catch(()=>{
+        toast({
+          variant: "destructive",
+          title: "Error loading product.",
+        });
+      })
+    }
+    
+    useEffect(() => {
+      getCategories();
+      getProductById(id!);
     },[])
     return (
-      <>
+      
+      <Container>
         <div className="w-full flex-1">
-          <div className="grid sm:grid-cols-2 p-5 gap-y-6">
+          <div className="grid sm:grid-cols-2 gap-y-6">
             <Input
               id="prod_name"
               type="text"
@@ -161,6 +184,7 @@ const EditProduct = () => {
               values={["Available", "Out of Stock", "Coming Soon"]}
               setState={setProductStatus}
               className="w-full sm:w-[70%]"
+              state={productStatus}
             />
             <Input
               id="prod_price"
@@ -184,6 +208,7 @@ const EditProduct = () => {
               values={categories.map((category) => category._id)}
               setState={setProductCategory}
               className="w-full sm:w-[70%]"
+              state={productCategory}
             />
             <Input
               id="prod_units"
@@ -216,14 +241,14 @@ const EditProduct = () => {
               />
               <button
                 className={`max-md:w-full w-[70%] bg-neutral-800 text-white rounded-xl font-light p-3 ${isLoading ? "cursor-not-allowed bg-neutral-700 disabled" : "cursor-pointer"}`}
-                onClick={handleAddProduct}
+                onClick={handleEditProduct}
               >
-                {isLoading ? <div className="flex gap-2 w-full justify-center"><Loader2 className="animate-spin" />Adding Product</div> : "Add Product"}
+                {isLoading ? <div className="flex gap-2 w-full justify-center"><Loader2 className="animate-spin" />Saving Changes</div> : "Save Changes"}
               </button>
             </div>
           </div>
         </div>
-      </>
+      </Container>
     );
 }
 

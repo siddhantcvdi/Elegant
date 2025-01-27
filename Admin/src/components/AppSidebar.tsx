@@ -1,4 +1,4 @@
-import { ChartNoAxesGantt, CircleUser, LayoutDashboardIcon, Package, PlusSquare, ShoppingCartIcon, Star } from "lucide-react"
+import { ChartNoAxesGantt, CircleUser, Filter, LayoutDashboardIcon, Package, PlusSquare, ShoppingCartIcon, Star } from "lucide-react"
 
 import {
   Sidebar,

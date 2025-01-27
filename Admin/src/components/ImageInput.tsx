@@ -20,10 +20,10 @@ const ImageInput = (props: ImageInputProps) => {
   return (
     <div className="flex flex-col text-xs gap-1 text-neutral-600 font-medium ">
       <label>Add Images</label>
-      <div className="flex w-[70%] max-md:w-full">
+      <div className="flex w-[70%] max-sm:w-full">
         <label
           htmlFor="img_selector"
-          className="w-[70%] max-md:w-full text-sm flex flex-1 items-center justify-center border border-gray-300 rounded-md h-9 bg-white cursor-pointer hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500"
+          className="w-[70%] max-sm:w-full text-sm flex flex-1 items-center justify-center border border-gray-300 rounded-md h-9 bg-white cursor-pointer hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500"
         >
           <PlusCircle className="w-4" color="#555" />
         </label>

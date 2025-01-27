@@ -39,7 +39,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
     }
     const deletedCat = await Category.findByIdAndDelete(id);
     if(!deletedCat){
-        throw new ApiError(500, "Error deleting category");
+        throw new ApiError(500, "Error deleting category, Try again later.");
     }
     res.status(200).json(new ApiResponse(200, deletedCat, "Category deleted successfully"));
 })

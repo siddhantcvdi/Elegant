@@ -17,6 +17,7 @@ function App() {
       <div className='flex flex-col w-full h-screen'>
       <Toaster />
       <TopBar/>
+      
       <Routes>
         <Route path='/addproduct' element={<AddProduct/>}/>
         <Route path='/categories' element={<Categories/>}/>
@@ -24,6 +25,7 @@ function App() {
         <Route path='/editProduct/:id' element={<EditProduct/>}/>
       </Routes>
       </div>
+      
     </SidebarProvider>
   )
 }

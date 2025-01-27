@@ -80,10 +80,10 @@ const getProducts = asyncHandler(async (req, res) => {
     { $match: filters.length > 0 ? { $and: filters } : {} },
     {
       $lookup: {
-        from: "categories", 
-        localField: "category", 
-        foreignField: "_id", 
-        as: "categoryDetails", 
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "categoryDetails",
       },
     },
     {
@@ -102,7 +102,7 @@ const getProducts = asyncHandler(async (req, res) => {
         status: 1,
         rating: 1,
         images: 1,
-        category: "$categoryDetails.name", 
+        category: "$categoryDetails.name",
       },
     },
   ];
@@ -137,6 +137,82 @@ const deleteProduct = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, null, "Product deleted successfully"));
-})
+});
 
-export { createProduct, getProducts, deleteProduct };
+const getProductById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new ApiError(404, "Product not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, product, "Product fetched successfully"));
+});
+
+const editProduct = asyncHandler(async (req, res) => {
+  let images = [];
+  const {id, name, price, discount, stock, description, status, category, brand } = req.body;
+
+  if (
+    [name, price, discount, stock, description, status, brand, category].some(
+      (field) => field?.trim() === "" || !field
+    )
+  ) {
+    throw new ApiError(400, "Please fill all the fields");
+  }
+  const checkProduct = await Product.findById(id);
+
+  if (!checkProduct) {
+    images || images.forEach((image) => fs.unlinkSync(image));
+    throw new ApiError(400, "Product not found");
+  }
+
+  if (req.files && Array.isArray(req.files) && req.files.length >= 1) {
+    images = req.files.map((file) => file.path) || [];
+  }
+
+  let updatedProductData;
+  if (images.length >= 1) {
+    const uploadedImages = await Promise.all(
+      images.map((image) => uploadOnCloudinary(image))
+    );
+    if (!uploadedImages || uploadedImages.length < 1) {
+      throw new ApiError(500, "Failed to upload images, Please try again");
+    }
+    updatedProductData = {
+      name,
+      price,
+      discount,
+      stock,
+      brand,
+      description,
+      status,
+      category,
+      images: uploadedImages.map((image) => image.secure_url),
+    };
+  } else {
+    updatedProductData = {
+      name,
+      price,
+      discount,
+      stock,
+      brand,
+      description,
+      status,
+      category,
+    };
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(id, updatedProductData, {
+    new: true,
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedProduct, "Product Updated successfully"));
+});
+
+export { createProduct, getProducts, deleteProduct, getProductById, editProduct };

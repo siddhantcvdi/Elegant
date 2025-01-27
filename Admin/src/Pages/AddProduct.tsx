@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Loader, Loader2 } from "lucide-react";
+import Container from "@/components/Container";
 
 interface Product {
   name: string;
@@ -23,7 +24,6 @@ type CategoryType = {
   name: string;
 };
 
-
 const AddProduct = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
@@ -40,8 +40,14 @@ const AddProduct = () => {
   const { toast } = useToast();
 
   const handleAddProduct = async () => {
-    if ([productName, productStatus, productDesc, productBrand].some((field) => field.trim() === "") ||
-        [productPrice, discount, units].some((field) => field === undefined || field === null)) {
+    if (
+      [productName, productStatus, productDesc, productBrand].some(
+        (field) => field.trim() === ""
+      ) ||
+      [productPrice, discount, units].some(
+        (field) => field === undefined || field === null
+      )
+    ) {
       toast({
         variant: "destructive",
         title: "Please fill all the fields.",
@@ -114,7 +120,6 @@ const AddProduct = () => {
         title: "Product added successfully.",
       });
       console.log("Response:", response.data);
-
     } catch (err: any) {
       console.error("Error adding product:", err);
       toast({
@@ -128,99 +133,113 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/v1/categories/all")
-    .then(res => {
-      if(res?.data.data && Array.isArray(res.data.data)) {
-        setCategories(res.data.data);
-      }
-    })
-    .catch(() => {
-      toast({
-        variant: "destructive",
-        title: "Error loading categories.",
+    axios
+      .get("http://localhost:3001/api/v1/categories/all")
+      .then((res) => {
+        if (res?.data.data && Array.isArray(res.data.data)) {
+          setCategories(res.data.data);
+        }
+      })
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          title: "Error loading categories.",
+        });
       });
-    })
-  },[])
+  }, []);
   return (
     <>
-      <div className="w-full flex-1">
-        <div className="grid sm:grid-cols-2 p-5 gap-y-6">
-          <Input
-            id="prod_name"
-            type="text"
-            title="Product Name"
-            setState={setProductName}
-            state={productName}
-            className="w-full sm:w-[70%]"
-          />
-          <DropInput
-            items={["Available", "Out of Stock", "Coming Soon"]}
-            title="Set Status"
-            values={["Available", "Out of Stock", "Coming Soon"]}
-            setState={setProductStatus}
-            className="w-full sm:w-[70%]"
-          />
-          <Input
-            id="prod_price"
-            type="number"
-            title="Price"
-            setState={setProductPrice}
-            state={productPrice}
-            className="w-full sm:w-[70%]"
-          />
-          <Input
-            id="prod_brand"
-            type="text"
-            title="Brand"
-            setState={setProductBrand}
-            state={productBrand}
-            className="w-full sm:w-[70%]"
-          />
-          <DropInput
-            items={categories.map((category) => category.name)}
-            title="Category"
-            values={categories.map((category) => category._id)}
-            setState={setProductCategory}
-            className="w-full sm:w-[70%]"
-          />
-          <Input
-            id="prod_units"
-            type="number"
-            title="Units"
-            setState={setUnits}
-            state={units}
-            className="w-full sm:w-[70%]"
-          />
-          <ImageInput
-            selectedFiles={selectedFiles}
-            setSelectedFiles={setSelectedFiles}
-          />
-          <div className="flex flex-col gap-6">
+      <Container>
+        <div className="w-full flex-1">
+          <div className="grid sm:grid-cols-2 gap-y-6">
             <Input
-              id="prod_discount"
+              id="prod_name"
+              type="text"
+              title="Product Name"
+              setState={setProductName}
+              state={productName}
+              className="w-full sm:w-[70%]"
+            />
+            <DropInput
+              items={["Available", "Out of Stock", "Coming Soon"]}
+              title="Set Status"
+              values={["Available", "Out of Stock", "Coming Soon"]}
+              setState={setProductStatus}
+              className="w-full sm:w-[70%]"
+            />
+            <Input
+              id="prod_price"
               type="number"
-              title="Discount"
-              setState={setDiscount}
-              state={discount}
+              title="Price"
+              setState={setProductPrice}
+              state={productPrice}
               className="w-full sm:w-[70%]"
             />
             <Input
-              id="prod_desc"
-              type="area"
-              title="Description"
-              setState={setProductDesc}
-              state={productDesc}
+              id="prod_brand"
+              type="text"
+              title="Brand"
+              setState={setProductBrand}
+              state={productBrand}
               className="w-full sm:w-[70%]"
             />
-            <button
-              className={`max-md:w-full w-[70%] bg-neutral-800 text-white rounded-xl font-light p-3 ${isLoading ? "cursor-not-allowed bg-neutral-700 disabled" : "cursor-pointer"}`}
-              onClick={handleAddProduct}
-            >
-              {isLoading ? <div className="flex gap-2 w-full justify-center"><Loader2 className="animate-spin" />Adding Product</div> : "Add Product"}
-            </button>
+            <DropInput
+              items={categories.map((category) => category.name)}
+              title="Category"
+              values={categories.map((category) => category._id)}
+              setState={setProductCategory}
+              className="w-full sm:w-[70%]"
+            />
+            <Input
+              id="prod_units"
+              type="number"
+              title="Units"
+              setState={setUnits}
+              state={units}
+              className="w-full sm:w-[70%]"
+            />
+            <ImageInput
+              selectedFiles={selectedFiles}
+              setSelectedFiles={setSelectedFiles}
+            />
+            <div className="flex flex-col gap-6">
+              <Input
+                id="prod_discount"
+                type="number"
+                title="Discount"
+                setState={setDiscount}
+                state={discount}
+                className="w-full sm:w-[70%]"
+              />
+              <Input
+                id="prod_desc"
+                type="area"
+                title="Description"
+                setState={setProductDesc}
+                state={productDesc}
+                className="w-full sm:w-[70%]"
+              />
+              <button
+                className={`max-sm:w-full w-[70%] bg-neutral-800 text-white rounded-xl font-light p-3 ${
+                  isLoading
+                    ? "cursor-not-allowed bg-neutral-700 disabled"
+                    : "cursor-pointer"
+                }`}
+                onClick={handleAddProduct}
+              >
+                {isLoading ? (
+                  <div className="flex gap-2 w-full justify-center">
+                    <Loader2 className="animate-spin" />
+                    Adding Product
+                  </div>
+                ) : (
+                  "Add Product"
+                )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 };

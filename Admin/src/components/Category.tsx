@@ -12,7 +12,7 @@ interface CategoryProps {
 const Category = (props: CategoryProps) => {
   
   return (
-    <div className="min-w-52 w-full max-sm:w-full border-[1px] border-neutral-200 rounded-lg p-2 flex gap-2 h-fit justify-between">
+    <div className="min-w-52 w-full max-sm:w-full border-[1px] bg-white border-neutral-200 rounded-lg p-2 flex gap-2 h-fit justify-between">
       <p className="font-bold text-lg">{props.name}</p>
       <div className="flex gap-2 w-fit justify-end">
         <button className=" bg-red-100 outline-black outline outline-2 p-1 rounded-lg flex items-center justify-center w-8 h-8 text-white"

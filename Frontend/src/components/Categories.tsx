@@ -14,7 +14,7 @@ const Categories = () => {
           className="w-full h-full mb-4 rounded-md object-cover"
         />
         <h2 className="text-xl font-bold text-gray-800">Living Room</h2>
-        <NavLink to={'/bed-room'} className={'hover:underline underline-offset-2'}>Shop Now →</NavLink>
+        <NavLink to={`/products/`} className={'hover:underline underline-offset-2'}>Shop Now →</NavLink>
 
       </div>
 
@@ -25,7 +25,7 @@ const Categories = () => {
           className="w-full h-full mb-4 rounded-md object-cover"
         />
         <h2 className="text-xl poppins-semibold text-gray-800">Bedroom</h2>
-        <NavLink to={'/bed-room'} className={'hover:underline underline-offset-2'}>Shop Now →</NavLink>
+        <NavLink to={'/bedroom'} className={'hover:underline underline-offset-2'}>Shop Now →</NavLink>
       </div>
 
       {/* Kitchen */}
@@ -36,7 +36,7 @@ const Categories = () => {
           className="w-full h-full mb-4 rounded-md object-cover"
         />
         <h2 className="text-xl font-bold text-gray-800">Kitchen</h2>
-        <NavLink to={'/bed-room'} className={'hover:underline underline-offset-2'}>Shop Now →</NavLink>
+        <NavLink to={'/kitchen'} className={'hover:underline underline-offset-2'}>Shop Now →</NavLink>
 
       </div>
     </div>

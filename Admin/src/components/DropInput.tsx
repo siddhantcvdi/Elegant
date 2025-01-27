@@ -14,15 +14,16 @@ interface DropInputProps {
   items: string[];
   values: string[];
   title: string;
-  setState: React.Dispatch<React.SetStateAction<string>>;
+  setState: any;
   className?: string;
+  state?: string;
 }
 
 const DropInput = (props: DropInputProps) => {
   return (
     <div className="flex flex-col text-xs gap-1 text-neutral-600 font-medium">
       <label>{props.title}</label>
-      <Select onValueChange={(value) => props.setState(value)}>
+      <Select onValueChange={(value) => props.setState(value)} value={props?.state}>
         <SelectTrigger className={twMerge("font-normal", props.className)}>
           <SelectValue placeholder="" />
         </SelectTrigger>

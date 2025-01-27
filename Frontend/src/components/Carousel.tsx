@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useMotionValue, motion } from "motion/react";
-import img1 from '../assets/heroimg1.png'
+import img1 from '../assets/heroimg1.jpg'
 import img2 from '../assets/img2.jpg'
-import img3 from '../assets/img3.webp'
+import img3 from '../assets/img3.jpg'
 
 const imgs: string[] = [
     img3,
@@ -11,7 +11,7 @@ const imgs: string[] = [
 ];
 
 const ONE_SECOND = 1000;
-const AUTO_DELAY = ONE_SECOND * 10;
+const AUTO_DELAY = ONE_SECOND * 5;
 const DRAG_BUFFER = 5;
 
 const SPRING_OPTIONS = {

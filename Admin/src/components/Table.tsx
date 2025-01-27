@@ -76,7 +76,7 @@ export default function ProductTable() {
   }, [currentPage]);
 
   return (
-    <div className="w-full h-full flex flex-col justify-between overflow-hidden pt-2 pr-2">
+    <div className="w-full h-full flex flex-col justify-between overflow-hidden pt-2 px-2">
       <ScrollArea className="rounded-md border overflow-scroll">
         <Table className="text-nowrap">
           <TableHeader>
