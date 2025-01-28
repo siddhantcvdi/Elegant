@@ -25,7 +25,9 @@ const ImageInput = (props: ImageInputProps) => {
           htmlFor="img_selector"
           className="w-[70%] max-sm:w-full text-sm flex flex-1 items-center justify-center border border-gray-300 rounded-md h-9 bg-white cursor-pointer hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500"
         >
-          <PlusCircle className="w-4" color="#555" />
+          {
+            selectedFiles.length === 0 ?  <PlusCircle className="w-4" color="#555" /> :  selectedFiles.length  === 1 ? `${selectedFiles.length} image selected` : `${selectedFiles.length} images selected`
+          }
         </label>
         <button
           className="rounded-lg bg-red-500 active:bg-red-600 w-9 flex justify-center items-center ml-2"
@@ -42,7 +44,7 @@ const ImageInput = (props: ImageInputProps) => {
         onChange={handleFileChange}
         className="sr-only"
       />
-      {selectedFiles.length > 0 && (
+      {/* {selectedFiles.length > 0 && (
         <div className="max-sm:w-full w-[70%]">
           <div className="grid grid-cols-3 gap-2 mt-2">
             {selectedFiles.map((file, index) => (
@@ -59,7 +61,7 @@ const ImageInput = (props: ImageInputProps) => {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

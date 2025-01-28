@@ -5,7 +5,6 @@ import { SidebarProvider } from './components/ui/sidebar'
 import { AppSidebar } from './components/AppSidebar'
 import TopBar from './components/TopBar'
 import { Toaster } from "@/components/ui/toaster"
-import Categories from "./Pages/Categories";
 import Products from "./Pages/Products";
 import EditProduct from "./Pages/EditProduct";
 
@@ -20,7 +19,6 @@ function App() {
       
       <Routes>
         <Route path='/addproduct' element={<AddProduct/>}/>
-        <Route path='/categories' element={<Categories/>}/>
         <Route path='/products' element={<Products/>}/>
         <Route path='/editProduct/:id' element={<EditProduct/>}/>
       </Routes>

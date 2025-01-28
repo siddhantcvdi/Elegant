@@ -1,5 +1,4 @@
 import Product from "../models/product.model.js";
-import Category from "../models/category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -60,71 +59,37 @@ const createProduct = asyncHandler(async (req, res) => {
 const getProducts = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-
   const { priceMin, priceMax, brand, category, search, sort } = req.query;
   const filters = [];
+  
   if (priceMin) filters.push({ price: { $gte: parseFloat(priceMin) } });
   if (priceMax) filters.push({ price: { $lte: parseFloat(priceMax) } });
   if (brand) filters.push({ brand });
-  if (category) filters.push({ category });
+  if (category && ["watches", "sneakers", "eyewear"].includes(category)) {
+    filters.push({ category });
+  }
   if (search) {
     filters.push({
       $or: [
-        { name: { $regex: search, $options: "i" } }, // Case-insensitive search in name
-        { description: { $regex: search, $options: "i" } }, // Case-insensitive search in description
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
       ],
     });
   }
 
-  const pipeline = [
-    { $match: filters.length > 0 ? { $and: filters } : {} },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "categoryDetails",
-      },
-    },
-    {
-      $unwind: {
-        path: "$categoryDetails",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $project: {
-        name: 1,
-        price: 1,
-        discount: 1,
-        brand: 1,
-        stock: 1,
-        status: 1,
-        rating: 1,
-        images: 1,
-        category: "$categoryDetails.name",
-      },
-    },
-  ];
   const options = {
     page,
     limit,
   };
-
   if (sort) {
-    pipeline.push({ $sort: { price: sort === "asc" ? 1 : -1 } });
+    options.sort = { price: sort === "asc" ? 1 : -1 };
   }
 
-  const aggregateQuery = Product.aggregate(pipeline);
-  const result = await Product.aggregatePaginate(aggregateQuery, options);
-
+  const result = await Product.paginate({ $and: filters.length > 0 ? filters : [] }, options);
   if (!result) {
     throw new ApiError(404, "No products found");
   }
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, result, "Products fetched successfully"));
+  return res.status(200).json(new ApiResponse(200, result, "Products fetched successfully"));
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {

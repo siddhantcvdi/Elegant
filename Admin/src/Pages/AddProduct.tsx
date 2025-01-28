@@ -19,11 +19,6 @@ interface Product {
   images: File[];
 }
 
-type CategoryType = {
-  _id: string;
-  name: string;
-};
-
 const AddProduct = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
@@ -35,7 +30,8 @@ const AddProduct = () => {
   const [productDesc, setProductDesc] = useState("");
   const [productBrand, setProductBrand] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [dialShape, setDialShape] = useState("");
+  const [strapMaterial, setStrapMaterial] = useState("")
 
   const { toast } = useToast();
 
@@ -132,21 +128,6 @@ const AddProduct = () => {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/v1/categories/all")
-      .then((res) => {
-        if (res?.data.data && Array.isArray(res.data.data)) {
-          setCategories(res.data.data);
-        }
-      })
-      .catch(() => {
-        toast({
-          variant: "destructive",
-          title: "Error loading categories.",
-        });
-      });
-  }, []);
   return (
     <>
       <Container>
@@ -184,9 +165,9 @@ const AddProduct = () => {
               className="w-full sm:w-[70%]"
             />
             <DropInput
-              items={categories.map((category) => category.name)}
+              items={["Watches","Eyewear","Sneakers"]}
               title="Category"
-              values={categories.map((category) => category._id)}
+              values={["watches","eyewear","sneakers"]}
               setState={setProductCategory}
               className="w-full sm:w-[70%]"
             />
@@ -202,15 +183,43 @@ const AddProduct = () => {
               selectedFiles={selectedFiles}
               setSelectedFiles={setSelectedFiles}
             />
+            <Input
+              id="prod_discount"
+              type="number"
+              title="Discount"
+              setState={setDiscount}
+              state={discount}
+              className="w-full sm:w-[70%]"
+            />
+             <DropInput
+              title="Ideal For"
+              items={["Men","Women","Unisex"]}
+              values={["men","women","unisex"]}
+              setState={setDialShape}
+              className="w-full sm:w-[70%]"
+            />
+            {
+              productCategory === "watches"?
+              <>
+                <DropInput
+              title="Dial Shape"
+              items={["Square","Rectangle","Circle"]}
+              values={["square","rectangle","circle"]}
+              setState={setDialShape}
+              className="w-full sm:w-[70%]"
+            />
+                <DropInput
+              title="Strap Material"
+              items={["Metal","Leather","Fabric"]}
+              values={["metal","leather","fabric"]}
+              setState={setStrapMaterial}
+              className="w-full sm:w-[70%]"
+            />
+               
+              </>
+              :<></>
+            }
             <div className="flex flex-col gap-6">
-              <Input
-                id="prod_discount"
-                type="number"
-                title="Discount"
-                setState={setDiscount}
-                state={discount}
-                className="w-full sm:w-[70%]"
-              />
               <Input
                 id="prod_desc"
                 type="area"
@@ -225,8 +234,7 @@ const AddProduct = () => {
                     ? "cursor-not-allowed bg-neutral-700 disabled"
                     : "cursor-pointer"
                 }`}
-                onClick={handleAddProduct}
-              >
+                onClick={handleAddProduct}>
                 {isLoading ? (
                   <div className="flex gap-2 w-full justify-center">
                     <Loader2 className="animate-spin" />

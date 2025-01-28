@@ -29,11 +29,6 @@ const items = [
     icon: PlusSquare
   },
   {
-    title: "Categories",
-    url: "/categories",
-    icon: ChartNoAxesGantt,
-  },
-  {
     title: "Orders",
     url: "/orders",
     icon: ShoppingCartIcon,
