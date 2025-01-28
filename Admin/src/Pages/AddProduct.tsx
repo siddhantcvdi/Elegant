@@ -217,7 +217,28 @@ const AddProduct = () => {
             />
                
               </>
-              :<></>
+              : productCategory === "eyewear"?
+              <>
+                <DropInput
+              title="Frame Shape"
+              items={["Square","Rectangle","Circle"]}
+              values={["square","rectangle","circle"]}
+              setState={setDialShape}
+              className="w-full sm:w-[70%]"/>
+              <DropInput
+              title="Fram Material"
+              items={["Square","Rectangle","Circle"]}
+              values={["square","rectangle","circle"]}
+              setState={setDialShape}
+              className="w-full sm:w-[70%]"/>
+              <DropInput
+              title="Polarized"
+              items={["Yes","No"]}
+              values={["yes","no"]}
+              setState={setDialShape}
+              className="w-full sm:w-[70%]"/>
+              </>
+              : <></>
             }
             <div className="flex flex-col gap-6">
               <Input
