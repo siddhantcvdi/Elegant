@@ -12,15 +12,13 @@ import account from "../assets/account.svg";
 import SideMenu from "./SideMenu";
 import { useUserStore } from "@/store/user.store";
 import { useToast } from "@/hooks/use-toast";
-import useCategoriesStore from "@/store/categories.store";
 
 const Navbar = () => {
   const token = useUserStore((store) => store.token);
   const logout = useUserStore((state) => state.logout);
   const { toast } = useToast();
   const loginPage = useNavigate();
-  const categories  = useCategoriesStore(store=>store.categories)
-  
+
   return (
     <nav className="sticky top-0 z-10 ">
       <div className="w-full h-[60px] bg-neutral-100 flex items-center px-10 justify-between max-sm:px-5">
@@ -35,11 +33,15 @@ const Navbar = () => {
                 Categories
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                {categories?.map((category, index) => (
-                  <NavLink to={`/products/${category._id}`} key={index}>
-                  <DropdownMenuItem>{category.name}</DropdownMenuItem>
-                  </NavLink>
-                ))}
+                <NavLink to={"/products/eyewear"}>
+                  <DropdownMenuItem>Eyewear</DropdownMenuItem>
+                </NavLink>
+                <NavLink to={"/products/watches"}>
+                  <DropdownMenuItem>Watches</DropdownMenuItem>
+                </NavLink>
+                <NavLink to={"/products/backpacks"}>
+                  <DropdownMenuItem>Backpacks</DropdownMenuItem>
+                </NavLink>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -85,8 +87,7 @@ const Navbar = () => {
                               variant: "destructive",
                             })
                           )
-                      }
-                    >
+                      }>
                       Log Out
                     </button>
                   </DropdownMenuItem>
@@ -95,8 +96,7 @@ const Navbar = () => {
             ) : (
               <button
                 onClick={() => loginPage("/login")}
-                className=" py-1.5 px-4 bg-neutral-900 text-white rounded-md"
-              >
+                className=" py-1.5 px-4 bg-neutral-900 text-white rounded-md">
                 Sign In
               </button>
             )}

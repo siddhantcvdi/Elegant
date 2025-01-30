@@ -25,12 +25,12 @@ const Input = (props: InputProps) => {
     );
   } else
     return (
-      <div className="flex flex-col text-xs gap-1 text-neutral-600 font-medium">
+      <div className={twMerge(`flex flex-col text-xs gap-1 text-neutral-600 font-medium`,props.className)} >
         {props.title === ""?<></>: <label htmlFor={props.id}>{props.title}</label>}
         <input
           type={props.type}
           id={props.id}
-          className={twMerge("text-sm p-2 w-fit border-[1px] border-gray-200 rounded-md", props.className)}
+          className={"text-sm p-2 border-[1px] border-gray-200 rounded-md w-full"}
           value={props.state}
           onChange={(e) => props.setState(e.target.value)}
         />

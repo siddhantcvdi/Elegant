@@ -44,7 +44,7 @@ const ImageInput = (props: ImageInputProps) => {
         onChange={handleFileChange}
         className="sr-only"
       />
-      {/* {selectedFiles.length > 0 && (
+      {selectedFiles.length > 0 && (
         <div className="max-sm:w-full w-[70%]">
           <div className="grid grid-cols-3 gap-2 mt-2">
             {selectedFiles.map((file, index) => (
@@ -61,7 +61,7 @@ const ImageInput = (props: ImageInputProps) => {
             ))}
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

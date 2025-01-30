@@ -38,7 +38,6 @@ const useUserStore = create<UserState>((set) => ({
             resolve()
         })
         .catch((err)=>{
-            console.log(err);
             set(()=>({token: ""}))
             reject(err.response.data.message)
         })
@@ -57,7 +56,6 @@ const useUserStore = create<UserState>((set) => ({
         resolve()
     })
     .catch(async (err)=>{
-        console.log(err);
         if(err.response.data.message === 'ACCESS_TOKEN_EXPIRED'){
             await useUserStore.getState().refreshAccessToken()
             await useUserStore.getState().logout(useUserStore.getState().token)
@@ -78,7 +76,11 @@ const useUserStore = create<UserState>((set) => ({
             set(()=>({token: response.data.data.accessToken}))
             resolve()
         })
-        .catch((err)=>{reject(err)})
+        .catch((err) => {
+          const errorMessage = err.response?.data?.message || "Token refresh failed";
+          console.error("Error Refreshing Token:", errorMessage); // ✅ Logs only short error message
+          reject(errorMessage); // ✅ Rejects only the short message
+        });
     })
   }
 }));

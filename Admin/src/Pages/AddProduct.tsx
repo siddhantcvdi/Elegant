@@ -30,9 +30,6 @@ const AddProduct = () => {
   const [productDesc, setProductDesc] = useState("");
   const [productBrand, setProductBrand] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [dialShape, setDialShape] = useState("");
-  const [strapMaterial, setStrapMaterial] = useState("")
-
   const { toast } = useToast();
 
   const handleAddProduct = async () => {
@@ -96,11 +93,9 @@ const AddProduct = () => {
     formData.append("stock", product.stock.toString());
     formData.append("description", product.description);
     formData.append("brand", product.brand);
-
     product.images.forEach((file) => {
       formData.append("images", file);
     });
-
     setIsLoading(true);
     try {
       const response = await axios.post(
@@ -165,9 +160,9 @@ const AddProduct = () => {
               className="w-full sm:w-[70%]"
             />
             <DropInput
-              items={["Watches","Eyewear","Sneakers"]}
+              items={["Watches", "Eyewear", "Backpacks"]}
               title="Category"
-              values={["watches","eyewear","sneakers"]}
+              values={["watches", "eyewear", "backpacks"]}
               setState={setProductCategory}
               className="w-full sm:w-[70%]"
             />
@@ -183,64 +178,15 @@ const AddProduct = () => {
               selectedFiles={selectedFiles}
               setSelectedFiles={setSelectedFiles}
             />
-            <Input
-              id="prod_discount"
-              type="number"
-              title="Discount"
-              setState={setDiscount}
-              state={discount}
-              className="w-full sm:w-[70%]"
-            />
-             <DropInput
-              title="Ideal For"
-              items={["Men","Women","Unisex"]}
-              values={["men","women","unisex"]}
-              setState={setDialShape}
-              className="w-full sm:w-[70%]"
-            />
-            {
-              productCategory === "watches"?
-              <>
-                <DropInput
-              title="Dial Shape"
-              items={["Square","Rectangle","Circle"]}
-              values={["square","rectangle","circle"]}
-              setState={setDialShape}
-              className="w-full sm:w-[70%]"
-            />
-                <DropInput
-              title="Strap Material"
-              items={["Metal","Leather","Fabric"]}
-              values={["metal","leather","fabric"]}
-              setState={setStrapMaterial}
-              className="w-full sm:w-[70%]"
-            />
-               
-              </>
-              : productCategory === "eyewear"?
-              <>
-                <DropInput
-              title="Frame Shape"
-              items={["Square","Rectangle","Circle"]}
-              values={["square","rectangle","circle"]}
-              setState={setDialShape}
-              className="w-full sm:w-[70%]"/>
-              <DropInput
-              title="Fram Material"
-              items={["Square","Rectangle","Circle"]}
-              values={["square","rectangle","circle"]}
-              setState={setDialShape}
-              className="w-full sm:w-[70%]"/>
-              <DropInput
-              title="Polarized"
-              items={["Yes","No"]}
-              values={["yes","no"]}
-              setState={setDialShape}
-              className="w-full sm:w-[70%]"/>
-              </>
-              : <></>
-            }
             <div className="flex flex-col gap-6">
+              <Input
+                id="prod_discount"
+                type="number"
+                title="Discount"
+                setState={setDiscount}
+                state={discount}
+                className="w-full sm:w-[70%]"
+              />
               <Input
                 id="prod_desc"
                 type="area"

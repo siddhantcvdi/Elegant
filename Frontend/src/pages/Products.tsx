@@ -1,21 +1,56 @@
 import ProductCard from "@/components/ProductCard";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+interface Product {
+  _id: string;
+  name: string;
+  category: string;
+  status: string;
+  price: number;
+  discount: number;
+  stock: number;
+  description: string;
+  brand: string;
+  images: string[];
+}
+
 const Products = () => {
-  const { id } = useParams();
-  console.log(id);
+  const { category } = useParams();
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/v1/products/getProducts`, {
+          params: {
+            page: 1,
+            limit: 10,
+            category
+          },
+        });
+        setProducts(response.data.data.docs);
+        console.log(products);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
+  
+    fetchProducts();
+  }, [category]);
   return (
-    <div className="max-w-[1400px] mx-auto p-4 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
+    <div className="max-w-[1400px] mx-auto  p-4 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      {
+        products.map((product) => (
+          <ProductCard
+            key={product._id}
+            name={product.name}
+            price={product.price}
+            discount={product.discount}
+            imageUrl={product.images[0]}
+          />
+        ))
+      }
     </div>
   );
 };
