@@ -11,7 +11,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
   const [mainImage, setMainImage] = useState(0);
   return (
     <div className="relative max-w-md mx-auto">
-      <div className="relative aspect-square bg-neutral-50 mb-4 flex justify-center items-center cursor-pointer">
+      <div className="relative aspect-square bg-white mb-4 flex justify-center items-center cursor-pointer">
         <button
           className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex justify-center items-center bg-neutral-100 p-3 rounded-lg"
           onClick={() => {
@@ -27,7 +27,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
             alt="Tray Table"
             width={400}
             height={400}
-            className="object-cover"
+            className="object-contain max-h-96"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -60,7 +60,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
               alt={`Tray Table view ${i}`}
               width={80}
               height={80}
-              className="object-contain "
+              className="object-contain max-h-[80px]"
             />
           </div>
         ))}

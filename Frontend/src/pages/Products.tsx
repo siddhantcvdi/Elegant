@@ -15,6 +15,7 @@ interface Product {
   brand: string;
   images: string[];
   discountedPrice: number;
+  rating: number;
 }
 
 const Products = () => {
@@ -41,7 +42,7 @@ const Products = () => {
     fetchProducts();
   }, [category]);
   return (
-    <div className="max-w-[1400px] mx-auto  p-4 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] poppins-regular">
+    <div className="container mx-auto p-4 grid grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(240px,1fr))] poppins-regular">
       {
         products.map((product) => (
           <ProductCard

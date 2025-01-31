@@ -1,6 +1,7 @@
-import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { Heart, ShoppingCart, Star } from "lucide-react";
+import { useRef, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import { Button } from "./ui/button";
 
 interface ProductProps {
   details: {
@@ -15,43 +16,47 @@ interface ProductProps {
     brand: string;
     images: string[];
     discountedPrice: number;
+    rating: number;
   }
 }
 
 const ProductCard = (props: ProductProps) => {
   const { details } = props;
-  const [isHovered, setIsHovered] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
   const {category} = useParams();
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center poppins-regular">
       <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md scale-95">
-        <NavLink to={`/products/${category}/${details._id}`} className="relative mx-3 mt-3 flex h-72 overflow-hidden rounded-xl">
+        <NavLink to={`/products/${category}/${details._id}`} className="relative  mx-3 mt-3 flex justify-center h-36 md:h-52 overflow-hidden rounded-xl">
         <img
+            ref={imageRef}
             className="object-contain hover:scale-105 duration-300"
-            src={isHovered ? details.images[1] : details.images[0]}
             alt="product image"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            src={details.images[0]}
+            onMouseEnter={() => (imageRef.current!.src = details.images[1])}
+            onMouseLeave={() => (imageRef.current!.src = details.images[0])}
           />
         </NavLink>
-        <div className="mt-4 px-5 pb-5">
+        <div className="mt-4 px-2  md:px-5 pb-2 md:pb-5">
+          <div className="flex gap-1 text-xs justify-start items-center rounded-full border w-fit px-2 h-fit py-0.5 mb-1">
+            {details.rating}
+            <Star width={12} height={12} color="#efbf04" fill="#efbf04"/>
+          </div>
          <NavLink to={`/products/${category}/${details._id}`} className="hover:text-primary-500">
-            <h5 className="text-lg tracking-tight text-slate-900">
+            <h5 className="text-sm md:text-lg tracking-tight text-slate-900">
               {details.name}
             </h5>
           </NavLink>
-          <div className="mt-2 mb-5 flex items-center justify-between">
+          <div className="mt-1 mb-2 md:mb-3 flex items-center justify-between">
             <p className="flex gap-1 items-center">
-              <span className="text-2xl font-bold text-slate-900">${details.discountedPrice}</span>
-              <span className="text-sm text-slate-900 line-through">${details.price}</span>
+              <span className="text-lg md:text-2xl font-bold text-slate-900">₹{details.discountedPrice}</span>
+              <span className="text-xs md:text-sm text-slate-900 line-through">₹{details.price}</span>
             </p>
-            <div className="flex items-center"></div>
+            <div className="flex items-center text-red-500">
+              -{details.discount}%
+            </div>
           </div>
-          <button
-            className="flex items-center gap-2 justify-center rounded-md bg-neutral-800 px-5 py-2.5 text-center text-md font-medium text-white hover:bg-neutral-700 w-full">
-            <ShoppingCart width={15}/>
-            <p>Add to Cart</p>
-          </button>
+          <Button className="w-full hidden md:block">Add to Cart</Button>   
         </div>
       </div>
     </div>
