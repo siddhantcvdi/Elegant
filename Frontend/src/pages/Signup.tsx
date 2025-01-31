@@ -42,7 +42,7 @@ const Signup = () => {
     })
   };
   return (
-    <div className="w-full h-nonav flex justify-center items-center">
+    <div className="w-full h-nonav flex justify-center items-center poppins-regular">
       <div className="bg-white sm:bg-neutral-50 h-full w-full sm:h-fit sm:w-[400px] rounded-2xl p-6 flex flex-col gap-8 sm:-mt-16">
         <div className="flex flex-col gap-2">
           <p className="poppins-regular text-3xl text-neutral-700">Sign Up</p>

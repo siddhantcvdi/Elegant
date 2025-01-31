@@ -18,12 +18,13 @@ interface Product {
 }
 
 const Products = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL_DEPLOY;
   const { category } = useParams();
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/v1/products/getProducts`, {
+        const response = await axios.get(`${backendUrl}/products/getProducts`, {
           params: {
             page: 1,
             limit: 10,
@@ -40,7 +41,7 @@ const Products = () => {
     fetchProducts();
   }, [category]);
   return (
-    <div className="max-w-[1400px] mx-auto  p-4 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+    <div className="max-w-[1400px] mx-auto  p-4 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] poppins-regular">
       {
         products.map((product) => (
           <ProductCard

@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 const Navbar = () => {
   const token = useUserStore((store) => store.token);
   const logout = useUserStore((state) => state.logout);
+  const {user} = useUserStore();
   const { toast } = useToast();
   const loginPage = useNavigate();
 
@@ -61,10 +62,8 @@ const Navbar = () => {
           <div className="flex items-center max-sm:hidden">
             {token !== "" ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="outline-none">
-                  <div className="w-8 flex items-center justify-center">
-                    <img src={account} alt="" />
-                  </div>
+                <DropdownMenuTrigger className="outline-none w-8 h-8 bg-neutral-800 rounded-full flex items-center justify-center text-white">
+                  {user.displayName.charAt(0).toUpperCase()}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="mr-5">
                   <DropdownMenuItem>Profile</DropdownMenuItem>
