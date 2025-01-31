@@ -14,6 +14,7 @@ interface Product {
   description: string;
   brand: string;
   images: string[];
+  discountedPrice: number;
 }
 
 const Products = () => {
@@ -44,10 +45,7 @@ const Products = () => {
         products.map((product) => (
           <ProductCard
             key={product._id}
-            name={product.name}
-            price={product.price}
-            discount={product.discount}
-            imageUrl={product.images[0]}
+            details={product}
           />
         ))
       }

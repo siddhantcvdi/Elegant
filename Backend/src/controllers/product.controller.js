@@ -59,36 +59,38 @@ const createProduct = asyncHandler(async (req, res) => {
 const getProducts = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-  const { priceMin, priceMax, brand, category, search, sort } = req.query;
-  const filters = [];
-  
-  if (priceMin) filters.push({ price: { $gte: parseFloat(priceMin) } });
-  if (priceMax) filters.push({ price: { $lte: parseFloat(priceMax) } });
-  if (brand) filters.push({ brand });
-  if (category && ["watches", "sneakers", "eyewear"].includes(category)) {
-    filters.push({ category });
-  }
-  if (search) {
-    filters.push({
-      $or: [
-        { name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
-      ],
-    });
+  const { priceMin, priceMax, brand, category, sort } = req.query;
+
+  // Create the aggregation pipeline
+  const pipeline = [];
+
+  // Filtering
+  const matchStage = {};
+  if (priceMin) matchStage.price = { $gte: parseFloat(priceMin) };
+  if (priceMax) matchStage.price = { ...matchStage.price, $lte: parseFloat(priceMax) };
+  if (brand) matchStage.brand = brand;
+  if (category && ["watches", "backpacks", "eyewear"].includes(category)) {
+    matchStage.category = category;
   }
 
+
+  if (Object.keys(matchStage).length > 0) {
+    pipeline.push({ $match: matchStage });
+  }
+
+  // Sorting
+  if (sort) {
+    pipeline.push({ $sort: { price: sort === "asc" ? 1 : -1 } });
+  }
+
+  // Pagination
   const options = {
     page,
     limit,
   };
-  if (sort) {
-    options.sort = { price: sort === "asc" ? 1 : -1 };
-  }
 
-  const result = await Product.paginate({ $and: filters.length > 0 ? filters : [] }, options);
-  if (!result) {
-    throw new ApiError(404, "No products found");
-  }
+  const result = await Product.aggregatePaginate(Product.aggregate(pipeline), options);
+
   return res.status(200).json(new ApiResponse(200, result, "Products fetched successfully"));
 });
 

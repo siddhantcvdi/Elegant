@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
 import { useUserStore } from "./store/user.store";
 import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
 
 const App = () => {
   const refreshAccessToken = useUserStore(store=>store.refreshAccessToken);
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/products/:category" element={<Products />} />
+        <Route path="/products/:category/:productId" element={<ProductDetails />} />
       </Routes>
     </>
   );

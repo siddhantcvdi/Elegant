@@ -1,40 +1,49 @@
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
 
 interface ProductProps {
-  name: string;
-  price: number;
-  discount: number;
-  imageUrl: string;
+  details: {
+    _id: string;
+    name: string;
+    category: string;
+    status: string;
+    price: number;
+    discount: number;
+    stock: number;
+    description: string;
+    brand: string;
+    images: string[];
+    discountedPrice: number;
+  }
 }
 
 const ProductCard = (props: ProductProps) => {
-  console.log(props);
-  
+  const { details } = props;
+  const [isHovered, setIsHovered] = useState(false);
+  const {category} = useParams();
   return (
     <div className="flex justify-center">
       <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md scale-95">
-        <a
-          className="relative mx-3 mt-3 flex h-72 overflow-hidden rounded-xl"
-          href="#">
-          <img
-            className="object-contain"
-            src={props.imageUrl}
+        <NavLink to={`/products/${category}/${details._id}`} className="relative mx-3 mt-3 flex h-72 overflow-hidden rounded-xl">
+        <img
+            className="object-contain hover:scale-105 duration-300"
+            src={isHovered ? details.images[1] : details.images[0]}
             alt="product image"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           />
-          <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">
-            {props.discount}% OFF
-          </span>
-        </a>
+        </NavLink>
         <div className="mt-4 px-5 pb-5">
-          <a href="#">
+         <NavLink to={`/products/${category}/${details._id}`} className="hover:text-primary-500">
             <h5 className="text-lg tracking-tight text-slate-900">
-              {props.name}
+              {details.name}
             </h5>
-          </a>
+          </NavLink>
           <div className="mt-2 mb-5 flex items-center justify-between">
             <p className="flex gap-1 items-center">
-              <span className="text-2xl font-bold text-slate-900">${(1-(props.discount/100))*props.price}</span>
-              <span className="text-sm text-slate-900 line-through">${props.price}</span>
+              <span className="text-2xl font-bold text-slate-900">${details.discountedPrice}</span>
+              <span className="text-sm text-slate-900 line-through">${details.price}</span>
             </p>
             <div className="flex items-center"></div>
           </div>

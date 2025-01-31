@@ -19,7 +19,6 @@ const productSchema = new mongoose.Schema(
     },
     discountedPrice: {
       type: Number,
-      required: true,
     },
     discount: {
       type: Number,
@@ -52,6 +51,13 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
+productSchema.pre("save", function (next) {
+  this.discountedPrice = this.price - (this.price * this.discount) / 100;
+  next();
+});
+
 productSchema.plugin(aggregatePaginate);
 const Product = mongoose.model("Product", productSchema);
 
