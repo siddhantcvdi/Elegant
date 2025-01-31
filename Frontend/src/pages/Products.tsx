@@ -1,6 +1,6 @@
 import ProductCard from "@/components/ProductCard";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface Product {

@@ -2,10 +2,9 @@ import { ImageDisplay } from "@/components/ImageDisplay";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
-import { Heart, Loader2, Star } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Loader2, Star } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Markdown from 'react-markdown'
 
 interface Product {
   name: string;

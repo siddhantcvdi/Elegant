@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import cart from "../assets/cart.svg";
-import account from "../assets/account.svg";
 import SideMenu from "./SideMenu";
 import { useUserStore } from "@/store/user.store";
 import { useToast } from "@/hooks/use-toast";
