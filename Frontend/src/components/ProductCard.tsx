@@ -1,5 +1,5 @@
-import { Heart, ShoppingCart, Star } from "lucide-react";
-import { useRef, useState } from "react";
+import { Star } from "lucide-react";
+import { useRef} from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { Button } from "./ui/button";
 
