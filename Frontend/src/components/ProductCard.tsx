@@ -27,10 +27,10 @@ const ProductCard = (props: ProductProps) => {
   return (
     <div className="flex justify-center poppins-regular">
       <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md scale-95">
-        <NavLink to={`/products/${category}/${details._id}`} className="relative  mx-3 mt-3 flex justify-center h-36 md:h-52 overflow-hidden rounded-xl">
+        <NavLink to={`/products/${category}/${details._id}`} className="relative  mx-3 mt-3 flex justify-center h-44 md:h-72 overflow-hidden rounded-xl">
         <img
             ref={imageRef}
-            className="object-contain hover:scale-105 duration-300"
+            className="object-contain bg-gray-100 h-full hover:scale-105 duration-300"
             alt="product image"
             src={details.images[0]}
             onMouseEnter={() => (imageRef.current!.src = details.images[1])}
@@ -42,8 +42,8 @@ const ProductCard = (props: ProductProps) => {
             {details.rating}
             <Star width={12} height={12} color="#efbf04" fill="#efbf04"/>
           </div>
-         <NavLink to={`/products/${category}/${details._id}`} className="hover:text-primary-500">
-            <h5 className="text-sm md:text-lg tracking-tight text-slate-900">
+         <NavLink to={`/products/${category}/${details._id}`} className="hover:text-primary-500 ">
+            <h5 className="text-sm md:text-lg tracking-tight text-slate-900 text-ellipsis overflow-hidden text-nowrap ">
               {details.name}
             </h5>
           </NavLink>
