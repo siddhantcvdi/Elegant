@@ -8,6 +8,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const backendUrl = import.meta.env.VITE_BACKEND_URL_DEPLOY;
   const { toast } = useToast();
   const navigate = useNavigate()
   const signup = async (
@@ -30,7 +31,7 @@ const Signup = () => {
       })
       return;
     }
-    const url = "http://localhost:3001/api/v1/users/register"
+    const url = `${backendUrl}/users/register`
     axios
     .post(url,{displayName: name, email, password})
     .then(()=>{
