@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -9,38 +10,50 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const backendUrl = import.meta.env.VITE_BACKEND_URL_DEPLOY;
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const signup = async (
     name: string,
     email: string,
     password: string,
     confirmPassword: string
   ) => {
-    if (!name ||!email ||!password ||[name, email, password].some((field) => field.trim() === "")) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      [name, email, password].some((field) => field.trim() === "")
+    ) {
       toast({
         variant: "destructive",
         className: "p-4 ",
         description: "Enter all Details",
-      })
+      });
       return;
     } else if (confirmPassword !== password) {
       toast({
         variant: "destructive",
         description: "Passwords do not match!",
-      })
+      });
       return;
     }
-    const url = `${backendUrl}/users/register`
-    axios
-    .post(url,{displayName: name, email, password})
-    .then(()=>{
-      toast({description: "Account created successfully.", className:"p-4"})
-      navigate('/login')
-    })
-    .catch((err: any)=>{
-      toast({description:`${err.response.data.message}`, variant:"destructive", className:"p-4"})
-    })
+    const url = `${backendUrl}/users/register`;
+    try {
+      setIsLoading(true);
+      await axios.post(url, { displayName: name, email, password });
+      toast({ description: "Account created successfully.", className: "p-4" });
+      navigate("/login");
+    } catch (err: any) {
+      setIsLoading(false);
+      toast({
+        description: `${err.response?.data?.message || "An error occurred"}`,
+        variant: "destructive",
+        className: "p-4",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="w-full h-nonav flex justify-center items-center poppins-regular">
@@ -83,10 +96,16 @@ const Signup = () => {
           }}
         />
         <button
-          className="w-full p-2 bg-neutral-900 text-white rounded-lg"
-          onClick={() => signup(name, email, password, confirmPassword)}
-        >
-          Sign Up
+          className={`w-full p-2 bg-neutral-900 poppins-light text-white rounded-lg ${isLoading ? "disabled bg-neutral-400 cursor-wait" : ""}`}
+          onClick={() => signup(name, email, password, confirmPassword)}>
+          {isLoading ? (
+            <div className={`flex items-center justify-center gap-2 `}>
+              <Loader2 className="animate-spin" />
+              Creating Account
+            </div>
+          ) : (
+            "Sign Up"
+          )}
         </button>
       </div>
     </div>

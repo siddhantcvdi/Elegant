@@ -15,7 +15,7 @@ interface Details {
 interface UserState {
   user: User;
   token: string;
-  login: (details: Details) => Promise<void>;
+  login: (details: Details, navigate: any) => Promise<void>;
   logout: (token: string) => Promise<void>;
   refreshAccessToken: () => Promise<void>;
 }
@@ -27,7 +27,7 @@ const useUserStore = create<UserState>((set) => ({
     email: "",
   },
   token: "",
-  login: (details) => {
+  login: (details, navigate) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL_DEPLOY;
     const url =  `${backendUrl}/users/login`;
     return new Promise<void>(async (resolve, reject) => {
@@ -44,6 +44,7 @@ const useUserStore = create<UserState>((set) => ({
               email: user.email,
             },
           }));
+          navigate("/");
           resolve();
         })
         .catch((err) => {

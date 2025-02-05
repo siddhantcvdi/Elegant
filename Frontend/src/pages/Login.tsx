@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useUserStore } from "@/store/user.store";
 import { useToast } from "@/hooks/use-toast";
@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const { login } = useUserStore();
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   return (
     <div className="w-full h-nonav flex justify-center items-center poppins-regular">
@@ -39,7 +40,7 @@ const Login = () => {
         <button
           className="w-full p-2 bg-neutral-900 text-white rounded-lg"
           onClick={() =>
-            login({ email, password })
+            login({ email, password }, navigate )
               .then(() => {
                 const user = useUserStore.getState().user
                 return toast({
