@@ -71,11 +71,13 @@ const loginUser = asyncHandler(async (req, res) => {
     sameSite: "None",
     secure: "true",
   };
-  res.status(201).cookie("refreshToken", refreshToken, options).json(
+  res.status(201)
+  .cookie("refreshToken", refreshToken, options)
+  .cookie("accessToken",accessToken, options)
+  .json(
     new ApiResponse(
       201,
       {
-        accessToken,
         loggedInUser,
       },
       "User logged in."
@@ -84,8 +86,6 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  console.log("Logging out");
-
   const user = req.user;
   const loggedInUser = await User.findById(user._id);
   loggedInUser.refreshToken = "";
@@ -130,7 +130,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .cookie("refreshToken", refreshToken, options)
-      .json(new ApiResponse(200, { accessToken, loggedInUser:user }, "Access Token Refreshed"));
+      .cookie("accessToken", accessToken, options)
+      .json(new ApiResponse(200, {loggedInUser:user }, "Access Token Refreshed"));
   } catch (err) {
     throw new ApiError(401, err?.message || "Invalid Refresh Token");
   }

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useUserStore } from "./store/user.store";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
 
 const App = () => {
   const refreshAccessToken = useUserStore(store=>store.refreshAccessToken);
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/products/:category" element={<Products />} />
         <Route path="/products/:category/:productId" element={<ProductDetails />} />
+        <Route path='/cart' element={<Cart/>} />
       </Routes>
     </>
   );

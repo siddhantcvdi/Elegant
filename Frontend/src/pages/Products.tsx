@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import { useLoadingStore } from "@/store/loading.store";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -23,11 +24,11 @@ const Products = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL_DEPLOY;
   const { category } = useParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const {loading, setLoading} = useLoadingStore();
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setIsLoading(true);
+        setLoading("products",true);
         const response = await axios.get(`${backendUrl}/products/getProducts`, {
           params: {
             page: 1,
@@ -38,16 +39,16 @@ const Products = () => {
         setProducts(response.data.data.docs);
         console.log(products);
       } catch (err) {
-        setIsLoading(false);
+        setLoading("products",false);
         console.error("Error fetching products:", err);
       } finally {
-        setIsLoading(false);
+        setLoading("products",false);
       }
     };
 
     fetchProducts();
   }, [category]);
-  if (isLoading) {
+  if (loading["products"]) {
     return (
       <div className="w-full h-nonav flex items-center justify-center">
         <Loader2 className="animate-spin" />

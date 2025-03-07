@@ -28,16 +28,20 @@ const addToCart = asyncHandler(async (req, res) => {
       cart.cartItems[itemIndex].quantity += quantity;
       cart.cartItems[itemIndex].price =
         product.price * cart.cartItems[itemIndex].quantity;
+      cart.cartItems[itemIndex].discountedPrice = 
+        product.discountedPrice * cart.cartItems[itemIndex].quantity;
     } else {
       cart.cartItems.push({
         product: productId,
         quantity,
         price: product.price * quantity,
+        discountedPrice: product.discountedPrice * quantity
       });
     }
 
     cart.totalItems = cart.cartItems.reduce((acc, item) => acc + item.quantity, 0);
     cart.totalPrice = cart.cartItems.reduce((acc, item) => acc + item.price, 0);
+    cart.totalDiscountedPrice = cart.cartItems.reduce((acc, item) => acc + item.discountedPrice, 0);
 
     await cart.save();
     return res
@@ -51,10 +55,12 @@ const addToCart = asyncHandler(async (req, res) => {
           product: productId,
           quantity,
           price: product.price * quantity,
+          discountedPrice: product.discountedPrice * quantity
         },
       ],
       totalItems: 1,
       totalPrice: product.price * quantity,
+      totalDiscountedPrice: product.discountedPrice * quantity,
     });
 
     await newCart.save();
@@ -98,4 +104,14 @@ const removeFromCart = asyncHandler(async (req, res) => {
     }
 })
 
-export { addToCart, removeFromCart };
+const getCart = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const cart = await Cart.findOne({ user: user._id }).populate("cartItems.product", "name images price discountedPrice");
+  if (!cart) {
+    throw new ApiError(404, "Cart not found");
+  }
+  res.status(200).json(new ApiResponse(200, cart, "Cart fetched successfully"));
+});
+
+
+export { addToCart, removeFromCart, getCart };
